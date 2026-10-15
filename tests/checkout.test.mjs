@@ -54,7 +54,7 @@ function validProviderResponse(overrides = {}) {
 }
 
 function dependencies(repository, paymentFetch, overrides = {}) {
-  return { repository, ...config, paymentFetch, ...overrides };
+  return { repository, ...config, paymentFetch, logProviderIssue() {}, ...overrides };
 }
 
 test("creates an awaiting-payment order from server catalogue prices and sends the existing sandbox contract", async () => {
@@ -166,8 +166,11 @@ test("rejects incomplete sandbox configuration before catalogue access or order 
 
 test("marks the order initialization_failed after a provider 401 or network error", async () => {
   const unauthorized = makeRepository();
-  const unauthorizedResult = await handleCheckoutRequest(checkoutBody, dependencies(unauthorized.repository, async () => new Response("unauthorized", { status: 401 })));
+  const providerDiagnostics = [];
+  const unauthorizedResult = await handleCheckoutRequest(checkoutBody, dependencies(unauthorized.repository, async () => new Response("unauthorized", { status: 401 }), { logProviderIssue: (details) => providerDiagnostics.push(details) }));
   assert.equal(unauthorizedResult.status, 502);
+  assert.match(unauthorizedResult.body.error, /HTTP 401/);
+  assert.deepEqual(providerDiagnostics, [{ httpStatus: 401, providerAccepted: false, responseDataPresent: false }]);
   assert.equal(unauthorized.state.orders[0].payment_status, "initialization_failed");
   assert.equal(unauthorized.state.updates.length, 1);
 
@@ -176,6 +179,16 @@ test("marks the order initialization_failed after a provider 401 or network erro
   assert.equal(networkResult.status, 502);
   assert.equal(networkFailure.state.orders[0].payment_status, "initialization_failed");
   assert.equal(networkFailure.state.updates.length, 1);
+});
+
+test("reports the safe validation reason when GeniusPay returns an unexpected checkout URL", async () => {
+  const { state, repository } = makeRepository();
+  const providerDiagnostics = [];
+  const result = await handleCheckoutRequest(checkoutBody, dependencies(repository, async () => validProviderResponse({ checkout_url: "https://untrusted.example/pay" }), { logProviderIssue: (details) => providerDiagnostics.push(details) }));
+  assert.equal(result.status, 502);
+  assert.match(result.body.error, /lien de checkout Sandbox valide/);
+  assert.deepEqual(providerDiagnostics, [{ httpStatus: 201, providerAccepted: true, reason: "checkout_url_untrusted" }]);
+  assert.equal(state.orders[0].payment_status, "initialization_failed");
 });
 
 test("rejects malformed, live, or unexpected checkout responses and records initialization failure", async () => {

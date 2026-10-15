@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { isGeniusPaySandboxConfigured, isValidSandboxCheckoutResponse } from "../src/lib/geniuspay-config.ts";
+import { getSandboxCheckoutUrl, isGeniusPaySandboxConfigured, isValidSandboxCheckoutResponse } from "../src/lib/geniuspay-config.ts";
 
 const sandboxConfig = {
   apiKey: "pk_sandbox_demo_only",
@@ -26,4 +26,11 @@ test("accepts only a pending XOF sandbox checkout with the expected amount and o
   assert.equal(isValidSandboxCheckoutResponse({ ...payment, environment: "live" }, 10000), false);
   assert.equal(isValidSandboxCheckoutResponse({ ...payment, checkout_url: "https://evil.example/checkout" }, 10000), false);
   assert.equal(isValidSandboxCheckoutResponse({ ...payment, checkout_url: "http://geniuspay.ci/checkout/demo" }, 10000), false);
+});
+
+test("accepts the alternate official GeniusPay host and tries payment_url if checkout_url is unusable", () => {
+  const payment = { amount: 10000, currency: "XOF", environment: "sandbox", status: "pending" };
+  assert.equal(getSandboxCheckoutUrl({ ...payment, checkout_url: "https://pay.genius.ci/checkout/MTX-demo" }, 10000).url, "https://pay.genius.ci/checkout/MTX-demo");
+  assert.equal(getSandboxCheckoutUrl({ ...payment, checkout_url: "", payment_url: "https://geniuspay.ci/checkout/MTX-demo" }, 10000).url, "https://geniuspay.ci/checkout/MTX-demo");
+  assert.equal(getSandboxCheckoutUrl({ ...payment, checkout_url: "https://untrusted.example/pay", payment_url: "https://evil.example/pay" }, 10000).reason, "checkout_url_untrusted");
 });

@@ -24,19 +24,36 @@ export function isValidSandboxCheckoutResponse(payment: {
   checkout_url?: unknown;
   payment_url?: unknown;
 }, expectedAmount: number): boolean {
-  const checkoutUrl = typeof payment.checkout_url === "string" ? payment.checkout_url : payment.payment_url;
-  if (typeof checkoutUrl !== "string") return false;
-  try {
-    const url = new URL(checkoutUrl);
-    return payment.amount === expectedAmount
-      && payment.currency === "XOF"
-      && payment.environment === "sandbox"
-      && payment.status === "pending"
-      && url.protocol === "https:"
-      && url.hostname === "geniuspay.ci"
-      && !url.username
-      && !url.password;
-  } catch {
-    return false;
+  return getSandboxCheckoutUrl(payment, expectedAmount).url !== null;
+}
+
+export function getSandboxCheckoutUrl(payment: {
+  amount?: unknown;
+  currency?: unknown;
+  environment?: unknown;
+  status?: unknown;
+  checkout_url?: unknown;
+  payment_url?: unknown;
+}, expectedAmount: number): { url: string | null; reason: string | null } {
+  if (payment.amount !== expectedAmount) return { url: null, reason: "amount_mismatch" };
+  if (payment.currency !== "XOF") return { url: null, reason: "currency_mismatch" };
+  if (payment.environment !== "sandbox") return { url: null, reason: "environment_mismatch" };
+  if (payment.status !== "pending") return { url: null, reason: "status_mismatch" };
+
+  const candidates = [payment.checkout_url, payment.payment_url].filter((value): value is string => typeof value === "string" && value.length > 0);
+  if (!candidates.length) return { url: null, reason: "checkout_url_missing" };
+  for (const candidate of candidates) {
+    try {
+      const url = new URL(candidate);
+      if (url.protocol === "https:"
+        && ["geniuspay.ci", "pay.genius.ci"].includes(url.hostname)
+        && !url.username
+        && !url.password) {
+        return { url: url.toString(), reason: null };
+      }
+    } catch {
+      // Try the alternate documented checkout URL field, if present.
+    }
   }
+  return { url: null, reason: "checkout_url_untrusted" };
 }

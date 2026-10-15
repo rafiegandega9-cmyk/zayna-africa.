@@ -1,6 +1,6 @@
 import { calculateGrandTotal } from "./cart.ts";
 import { getDeliveryFeeXof } from "./delivery.ts";
-import { isGeniusPaySandboxConfigured, isValidSandboxCheckoutResponse } from "./geniuspay-config.ts";
+import { getSandboxCheckoutUrl, isGeniusPaySandboxConfigured } from "./geniuspay-config.ts";
 
 const text = (value, max) => typeof value === "string" ? value.trim().slice(0, max) : "";
 
@@ -26,6 +26,7 @@ export async function handleCheckoutRequest(body, dependencies) {
   if (deliveryFee === null) return response(422, { error: "Les frais de livraison pour cette ville restent à définir. Aucun paiement ne peut être lancé pour le moment." });
 
   const { repository, apiKey, apiSecret, webhookSecret, siteUrl, paymentFetch = fetch } = dependencies;
+  const logProviderIssue = dependencies.logProviderIssue ?? ((details) => console.error("GeniusPay checkout initialization rejected", details));
   const sandboxPaymentReady = isGeniusPaySandboxConfigured({ apiKey, apiSecret, webhookSecret, siteUrl });
   if (!repository || !apiKey || !apiSecret || !siteUrl || !sandboxPaymentReady) {
     return response(503, { error: "Paiement de test non configuré : clés sandbox, secret webhook et URL HTTPS requis. Aucune commande ni aucun paiement n'a été créé." });
@@ -84,12 +85,21 @@ export async function handleCheckoutRequest(body, dependencies) {
 
   const result = await paymentResponse.json().catch(() => null);
   const payment = result?.data;
-  const checkoutUrl = typeof payment?.checkout_url === "string" ? payment.checkout_url : typeof payment?.payment_url === "string" ? payment.payment_url : null;
-  if (!paymentResponse.ok || !result?.success || !payment || !isValidSandboxCheckoutResponse(payment, total) || !checkoutUrl) {
+  if (!paymentResponse.ok || !result?.success || !payment || typeof payment !== "object") {
+    logProviderIssue({ httpStatus: paymentResponse.status, providerAccepted: result?.success === true, responseDataPresent: Boolean(payment) });
     await repository.markInitializationFailed(orderId);
-    return response(502, { error: "GeniusPay n’a pas fourni de lien de paiement. Aucun paiement n’a été confirmé." });
+    const reason = paymentResponse.status === 401 || paymentResponse.status === 403
+      ? `GeniusPay a refusé l’authentification Sandbox (HTTP ${paymentResponse.status}). Vérifiez les identifiants de l’environnement dans Vercel.`
+      : `GeniusPay a refusé la demande de paiement (HTTP ${paymentResponse.status}). Aucun paiement n’a été confirmé.`;
+    return response(502, { error: reason });
+  }
+  const checkout = getSandboxCheckoutUrl(payment, total);
+  if (!checkout.url) {
+    logProviderIssue({ httpStatus: paymentResponse.status, providerAccepted: true, reason: checkout.reason });
+    await repository.markInitializationFailed(orderId);
+    return response(502, { error: "La réponse GeniusPay ne contient pas un lien de checkout Sandbox valide. Aucun paiement n’a été confirmé." });
   }
   const { error: updateError } = await repository.savePaymentReference(orderId, payment.reference ?? null);
   if (updateError) return response(503, { error: "Le paiement a été préparé mais sa référence n’a pas pu être enregistrée. Contactez la boutique avant de réessayer." });
-  return response(200, { checkoutUrl });
+  return response(200, { checkoutUrl: checkout.url });
 }
