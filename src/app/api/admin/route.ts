@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { validateProductEditableFields } from "@/lib/admin-products";
+import { getAdminOrderUpdate } from "@/lib/order-update.mjs";
 
 export const runtime = "nodejs";
 
@@ -48,9 +49,9 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ saved: true });
   }
 
-  const orderStatuses = ["awaiting_payment", "processing", "preparing", "shipped", "delivered", "cancelled", "payment_failed"];
-  if (body.type === "order" && typeof body.id === "string" && orderStatuses.includes(body.order_status)) {
-    const { error } = await db.from("orders").update({ order_status: body.order_status, updated_at: new Date().toISOString() }).eq("id", body.id);
+  const orderUpdate = getAdminOrderUpdate(body);
+  if (orderUpdate) {
+    const { error } = await db.from("orders").update(orderUpdate.updates).eq("id", orderUpdate.id);
     if (error) return NextResponse.json({ error: "La mise à jour de la commande a échoué." }, { status: 503 });
     return NextResponse.json({ saved: true });
   }

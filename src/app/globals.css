@@ -25,3 +25,168 @@
 .image-upload{display:inline-block;border:1px solid #ded8ce;padding:7px 9px;font-size:8px;color:#675f55;cursor:pointer}.image-upload input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 
 .admin-table-wrap td input[type=text],.admin-table-wrap td textarea{width:170px;max-width:220px;padding:7px;border:1px solid #ded8ce;background:white;font:inherit;white-space:normal}.admin-table-wrap td textarea{min-height:62px;resize:vertical;line-height:1.45}
+
+/* Zayna Africa: palette artisanale, matières chaudes et contraste éditorial. */
+:root{--ink:#2d1b16;--muted:#78685c;--paper:#f5efe5;--cream:#e9dfd0;--terracotta:#a64f35;--line:#ded1bf}
+body{background:var(--paper);color:var(--ink)}
+.announcement{background:#2d1b16;color:#f6ecdd}.announcement a{color:#dfb969}
+.site-header{background:#f5efe5;border-bottom-color:#d9c6ae}.wordmark{letter-spacing:.25em}.wordmark span{color:#a64f35}
+.main-nav a{color:#554137}.main-nav a:hover,.footer-links a:hover{color:#a64f35}.bag-button span{border-color:#ae8d68}
+.hero{background:#453025}.hero-photo{object-position:30% 54%;filter:brightness(.8) saturate(.82) sepia(.08)}
+.hero-shade{background:linear-gradient(90deg,rgba(37,22,16,.04) 0%,rgba(37,22,16,.18) 38%,rgba(37,22,16,.73) 68%,rgba(37,22,16,.82) 100%),linear-gradient(0deg,rgba(30,17,12,.38),transparent 42%)}
+.hero-copy{left:auto;right:11%;top:19%;width:min(570px,48%)}.hero h1{font-size:clamp(63px,7.1vw,102px);line-height:.94;text-shadow:0 3px 28px #24160f55}.hero h1 em{color:#e2bc70}.eyebrow.light{color:#e5c783}.hero-intro{color:#f0e3d1}.button-cream{background:#ead5aa;color:#38231a}.button-cream:hover{background:#f4e7cb}.hero-stamp{border-color:#dabd7d;color:#f0d89f}
+.values-strip{background:#eae1d3;border-bottom-color:#d9c7ad}.values-strip>div{color:#49372c}.values-strip svg,.text-link svg{color:#a64f35}.values-strip svg{color:#68734e}
+.eyebrow{color:#9a4b32}.section-heading h2,.story h2,.ritual h2,.newsletter h2,.faq-section h2{color:#38251c}.text-link{color:#50382a}.collection{padding-top:125px;padding-bottom:130px}.section-heading h2{font-size:clamp(46px,5vw,68px)}
+.collection-toolbar{border-color:#d8c6ad}.collection-toolbar p{color:#78685c}.filter{color:#756455}.filter.active{border-color:#a64f35;background:#a64f35;color:#fff7e9}
+.product-grid{gap:22px}.product-visual{background:#d8c4a8!important;box-shadow:0 14px 34px #442a1b10}.product-visual img{object-fit:cover}.product-card:hover .product-visual{box-shadow:0 22px 40px #442a1b20}.product-tag{background:#f5efe5;color:#68432f;letter-spacing:.12em}.quick-view{background:#2d1b16;color:#f7eddf}.product-meta p{color:#8b705b}.product-name{color:#39251b;font-size:18px}.product-price{color:#70422d;font-weight:600}.add-button{border-color:#cbb79d;color:#543b2c}.add-button:hover{border-color:#a64f35;color:#a64f35}
+.story{background:#e5d8c6}.story-image img{filter:saturate(.78) sepia(.11);object-position:50% 58%}.story-copy>p:not(.eyebrow){color:#675345}.story-copy .text-link{color:#643c2b}.story-mark{color:#a64f3520}
+.ritual{padding-top:130px;padding-bottom:130px}.ritual-copy>p:not(.eyebrow){color:#725f4d}.button-dark{background:#39231a;color:#fff4e2}.button-dark:hover{background:#a64f35}.ritual-image{box-shadow:16px 18px 0 #d9c5a6}.ritual-image img{object-position:27% center;filter:saturate(.84) sepia(.09)}.ritual-image span{color:#f6e3bd}
+.faq-section{border-color:#d9c7ad}.faq-list details,.detail-extra details{border-color:#d8c6ad}.faq-list summary::after,.detail-extra summary::after{color:#a64f35}
+.newsletter{background:#342019;color:#f5ecdf}.newsletter .eyebrow{color:#dfbd78}.newsletter h2{color:#fff2dd}.newsletter h2 em{color:#dfbd78}.newsletter>p:not(.eyebrow){color:#dfd0bd}.newsletter form{border-color:#a78a62}.newsletter input::placeholder{color:#c7b59e}.newsletter form button{color:#e1c17f}.newsletter small{color:#c2ad91}
+.site-footer{background:#2d1b16;color:#f5ebdd}.footer-logo{color:#fff3df}.footer-logo span{color:#dfa861}.footer-top>div:first-child p{color:#d8c3a5}.footer-links span{color:#dda968}.footer-links a{color:#e6d8c7}.footer-bottom{border-color:#604638;color:#ccb9a4}.footer-bottom a{color:#e1d1bd}
+.drawer,.checkout-modal{background:#f7f0e5;color:#342219}.drawer-head{border-color:#deceb9}.drawer-head h2{color:#342219}.cart-line{border-color:#e0d2bf}.cart-thumb{background:#e6d4ba!important}.cart-thumb img{object-fit:cover}.cart-line-info>span,.drawer-total small{color:#8a7159}.cart-line-info strong{color:#42291d}.quantity{border-color:#d5c2a7}.quantity button:hover{color:#a64f35}.remove-link{color:#9a4b32}.empty-cart{color:#806e5b}.empty-cart p{color:#39251c}.checkout-modal{box-shadow:0 24px 90px #1e100d55}.order-summary{border-color:#deceb9}.order-summary p{color:#76624f}.order-summary .summary-total{color:#37241b}.checkout-form label{color:#624c3a}.checkout-form input,.checkout-form select,.checkout-form textarea{border-color:#d9c5a8;background:#fffaf1;outline-color:#a64f35;color:#342219}.checkout-hint{color:#786752}
+.detail-page,.info-page{background:#f5efe5}.detail-header,.admin-header{border-color:#deceb9}.detail-visual{background:#dfccb0!important;box-shadow:16px 18px 0 #e8dccb}.detail-visual img{object-fit:cover}.detail-copy h1{color:#39251c;font-size:clamp(44px,5vw,64px)}.detail-price{font-weight:600;color:#88452e}.detail-desc{color:#6c5745}.detail-benefit,.draft-note{color:#796653}.draft-note{border-color:#a64f35}.detail-extra{border-color:#deceb9}
+.admin-page{background:#f0e8dc}.admin-table-wrap,.order-admin-card{background:#faf6ee;border-color:#dfd0bc}.admin-action,.save-button{border-color:#ceb99c;color:#513a2b}.admin-action:hover,.save-button:hover{background:#a64f35;color:#fff}.admin-content h2 span,.order-admin-head span,.order-total small{color:#88725b}.admin-table-wrap td input[type=text],.admin-table-wrap td textarea,.admin-table-wrap td input[type=number],.status-label select,.admin-login input{border-color:#d9c5a8;background:#fffaf1}.admin-login>p:not(.eyebrow){color:#786653}
+@media(max-width:1000px){.hero-copy{right:7%;width:min(530px,55%)}.hero-shade{background:linear-gradient(90deg,rgba(37,22,16,.08),rgba(37,22,16,.7) 60%,rgba(37,22,16,.8)),linear-gradient(0deg,rgba(30,17,12,.38),transparent 42%)}.product-grid{gap:28px 18px}}
+@media(max-width:680px){.site-header,.main-nav{background:#f5efe5}.hero{background:#3a261c}.hero-photo{object-position:31% center}.hero-shade{background:linear-gradient(0deg,rgba(37,22,16,.83) 0%,rgba(37,22,16,.58) 45%,rgba(37,22,16,.05) 100%),linear-gradient(90deg,rgba(37,22,16,.18),transparent)}.hero-copy{top:auto;bottom:24%;left:7%;right:5%;width:auto}.hero h1{font-size:clamp(55px,15vw,78px)}.hero-note,.hero-scroll{color:#f5e8d2}.hero-stamp{border-color:#dfc182;color:#f0d89f}.values-strip{background:#eae1d3}.collection{padding-top:78px;padding-bottom:82px}.section-heading h2{font-size:42px}.product-grid{gap:25px 12px}.product-visual{aspect-ratio:.76}.product-tag{font-size:7px;padding:6px 7px}.product-name{font-size:15px}.product-price{color:#70422d}.story{background:#e5d8c6}.story-image{min-height:390px}.ritual{padding-top:78px;padding-bottom:86px}.ritual-image{box-shadow:9px 10px 0 #d9c5a6}.newsletter{padding:62px 18px 56px}.newsletter h2{font-size:38px}.site-footer{background:#2d1b16}.footer-links{gap:30px}.footer-bottom{color:#ccb9a4}.footer-bottom div a{color:#e1d1bd}.detail-grid{margin-top:20px}.detail-visual{box-shadow:9px 10px 0 #e8dccb}.detail-copy h1{font-size:42px}}
+
+/* Direction artistique ivoire naturelle, accordée à la référence ZAYNA. */
+:root{--ink:#29241e;--muted:#81766a;--paper:#faf7f1;--cream:#f1e9dd;--terracotta:#9a744e;--line:#e9dfd2}
+body{background:#faf7f1;color:#29241e}
+.announcement{background:#eee5d8;color:#765a3d}.announcement a{color:#8c6846}
+.site-header,.main-nav{background:#faf7f1}.site-header{border-bottom-color:#e8ded1}.wordmark{font-family:var(--serif);font-weight:400}.wordmark span{color:#97744f}
+.main-nav a{color:#5c5247}.main-nav a:hover,.footer-links a:hover{color:#96704b}
+.hero{background:#9b8268}.hero-photo{filter:brightness(.88) saturate(.78)}.hero-shade{background:linear-gradient(90deg,rgba(42,32,23,.08),rgba(42,32,23,.2) 43%,rgba(42,32,23,.66) 72%,rgba(42,32,23,.76)),linear-gradient(0deg,rgba(42,32,23,.2),transparent 40%)}.hero h1 em,.hero-stamp,.eyebrow.light{color:#f0dfc5}
+.values-strip{background:#f1e9dd;border-color:#e5dbce}.values-strip>div{color:#625545}.values-strip svg,.text-link svg{color:#9a7955}
+.collection{background:#faf7f1}.section-heading h2,.story h2,.ritual h2,.newsletter h2,.faq-section h2{color:#302921}.collection-toolbar{border-color:#e6dccf}.filter{color:#75695b}.filter.active{background:#9b7955;border-color:#9b7955;color:#fffaf2}
+.product-grid{gap:18px}.product-card{background:#faf7f1}.product-visual{background:#eee5d8!important;box-shadow:none;border:1px solid #eee5d8}.product-card:hover .product-visual{box-shadow:0 12px 28px #59452b18}.product-tag{background:rgba(250,247,241,.94);color:#70583d}.quick-view{background:rgba(250,247,241,.94);color:#393127}.product-meta p{color:#8a7a67}.product-name{color:#302921}.product-price{color:#70583d}.add-button{border-color:#d9cbb8;color:#5e4d3b}.add-button:hover{border-color:#9b7955;color:#826340}
+.story{background:#f1e9dd}.story-image img{filter:saturate(.76)}.story-copy>p:not(.eyebrow){color:#706456}.story-mark{color:#9b79551c}
+.ritual{background:#faf7f1}.ritual-copy>p:not(.eyebrow){color:#74685a}.ritual-image{background:#eee5d8;box-shadow:12px 14px 0 #eee5d8}.ritual-image img{filter:saturate(.75)}
+.newsletter{background:#ece3d6;color:#302921}.newsletter .eyebrow,.newsletter h2 em{color:#98764f}.newsletter h2{color:#302921}.newsletter>p:not(.eyebrow){color:#706456}.newsletter form{border-color:#a88c68}.newsletter input{color:#302921}.newsletter input::placeholder,.newsletter small{color:#827565}.newsletter form button{color:#785e3e}
+.site-footer{background:#f1e9dd;color:#302921}.footer-logo{color:#302921}.footer-logo span,.footer-links span{color:#96744e}.footer-top>div:first-child p{color:#76695a}.footer-links a{color:#5f5549}.footer-bottom{border-color:#dfd4c5;color:#82776a}.footer-bottom a{color:#6a5a46}
+.drawer,.checkout-modal{background:#faf7f1;color:#302921}.detail-page,.info-page{background:#faf7f1}.detail-visual{background:#eee5d8!important;box-shadow:12px 14px 0 #eee5d8}.admin-page{background:#f3ece1}
+@media(max-width:680px){.site-header,.main-nav{background:#faf7f1}.values-strip,.story,.site-footer{background:#f1e9dd}.newsletter{background:#ece3d6}.hero-shade{background:linear-gradient(0deg,rgba(42,32,23,.78),rgba(42,32,23,.38) 45%,rgba(42,32,23,.04)),linear-gradient(90deg,rgba(42,32,23,.12),transparent)}.ritual-image{box-shadow:8px 9px 0 #eee5d8}}
+
+/* Presentation de collection inspirée de la référence ivoire ZAYNA. */
+:root{--ink:#29241e;--muted:#786e62;--paper:#fbf8f2;--cream:#f1e8dc;--terracotta:#92704b;--line:#e5dbcd}
+.announcement{height:32px;background:#f0e8dd;color:#77634c;border-bottom:1px solid #e7ddcf;font-size:9px;letter-spacing:.13em}
+.site-header{height:88px;background:#fbf8f2;border-bottom:1px solid #e8dfd3}.wordmark{font:400 27px/1 var(--serif);letter-spacing:.24em;color:#211d19}.wordmark span{font:500 9px var(--sans);letter-spacing:.36em;color:#94734f}
+.main-nav a{color:#60564b;letter-spacing:.04em}.bag-button{color:#44392f}.bag-button span{border-color:#b6a184}
+.collection{padding:88px 3.1% 100px;background:#fbf8f2}.section-heading{margin:0 auto;max-width:1440px}.section-heading h2{font-size:clamp(42px,4.5vw,61px);color:#2a241e}.section-heading .eyebrow,.eyebrow{color:#94744f}.collection-toolbar{margin:26px auto 20px;max-width:1440px;border-color:#e6dccf}.product-grid{max-width:1440px;margin:0 auto;gap:5px;background:#e8dfd3;border:1px solid #e8dfd3}.product-card{background:#fbf8f2;padding:0 0 15px}.product-visual{aspect-ratio:.78;background:#eee5d9!important;border:0;box-shadow:none}.product-visual img{object-fit:cover}.product-card:nth-child(1) .product-visual img{object-position:center 52%}.product-card:nth-child(2) .product-visual img{object-position:center 74%}.product-card:nth-child(3) .product-visual img{object-position:center}.product-card:nth-child(4) .product-visual img{object-position:center}
+.product-tag{top:13px;left:13px;padding:7px 9px;background:#fbf8f2eF;color:#785f42;font-size:8px;letter-spacing:.1em}.quick-view{background:#fbf8f2ed;color:#463b2f}.product-meta{padding:15px 15px 0}.product-meta p{color:#8b7a66;letter-spacing:.11em}.product-name{font-size:clamp(16px,1.4vw,20px);color:#2c251e}.product-price{font-size:11px;color:#755a3c}.add-button{margin:10px 15px 0;width:calc(100% - 30px);height:38px;border:1px solid #a88b68;background:#a88b68;color:#fffaf1;padding:0 11px;letter-spacing:.015em}.add-button:hover{background:#826344;border-color:#826344;color:white}
+.values-strip{background:#f3ece2;border-color:#e8dfd3}.story,.site-footer{background:#f1e9dd}.story-copy h2,.ritual h2{color:#2c261f}.ritual-image{box-shadow:10px 12px 0 #eee5d9}.newsletter{background:#eee6da;color:#2b251f}.newsletter h2,.newsletter h2 em{color:#2b251f}.newsletter .eyebrow{color:#92704b}.newsletter>p:not(.eyebrow){color:#706456}.newsletter input{color:#2b251f}.newsletter form button{color:#71583c}.site-footer{color:#302921}.footer-logo{color:#302921}.footer-top>div:first-child p{color:#776b5b}.footer-links span,.footer-logo span{color:#91704b}.footer-links a{color:#5c5247}.footer-bottom{border-color:#ded4c6;color:#81766a}.footer-bottom a{color:#675840}
+@media(max-width:1000px){.collection{padding:74px 4% 82px}.product-grid{gap:5px 4px}.product-meta{padding:12px 10px 0}.add-button{margin-left:10px;width:calc(100% - 20px);margin-right:10px}}
+@media(max-width:680px){.announcement{height:30px}.site-header{height:68px}.wordmark{font-size:21px}.collection{padding:58px 4% 68px}.section-heading h2{font-size:39px}.product-grid{gap:5px 4px}.product-visual{aspect-ratio:.72}.product-meta{padding:10px 8px 0}.product-name{font-size:15px}.product-price{font-size:10px}.product-tag{top:8px;left:8px;font-size:6px;padding:5px 6px}.add-button{height:34px;margin:8px 8px 0;width:calc(100% - 16px);padding:0 7px;font-size:8px}.story,.values-strip,.site-footer{background:#f1e9dd}.newsletter{background:#eee6da}}
+
+/* Finition chaleureuse et lisible, avec des accents crème, brun et or. */
+:root{--ink:#2b211b;--muted:#75665a;--paper:#faf5ee;--cream:#f2e5d5;--terracotta:#8c552d;--line:#e8d9c8}
+body{background:#faf5ee;color:#2b211b}
+.announcement{background:#f2e5d5;color:#75665a;border-color:#e8d9c8}
+.announcement a,.eyebrow,.section-heading .eyebrow{color:#8a623e}
+.site-header{background:#faf5ee;border-color:#e8d9c8}
+.wordmark{font-family:var(--serif);color:#2b170f;letter-spacing:.2em}
+.wordmark span{font-family:var(--sans);color:#8b633e}
+.main-nav a,.bag-button{color:#4a2817}
+.main-nav a:hover,.footer-links a:hover{color:#9a6535}
+.bag-button span{border-color:#b9823e}
+.hero{height:min(560px,48vw);min-height:450px;background:#d9c3a8;color:#2b211b}
+.hero-photo{object-position:66% 53%;filter:brightness(1.02) saturate(.85)}
+.hero-shade{background:linear-gradient(90deg,#faf1e4 0%,rgba(250,241,228,.98) 25%,rgba(250,241,228,.83) 43%,rgba(250,241,228,.12) 68%,transparent 100%)}
+.hero-copy{left:8%;right:auto;top:16%;width:min(510px,43%)}
+.eyebrow.light{color:#82562f}
+.hero h1{font-size:clamp(54px,6.2vw,82px);line-height:1.02;letter-spacing:-.045em;text-shadow:none;color:#2b170f}
+.hero h1 em{color:#74421f}
+.hero-intro{font-size:15px;color:#59483a;line-height:1.65}
+.button{border-radius:3px;letter-spacing:.04em;text-transform:none;font-size:11px}
+.button-cream{background:#4a2817;color:#fff8ed}.button-cream:hover{background:#2b170f}
+.button-dark{background:#2b170f;color:#fff8ed}.button-dark:hover{background:#74421f}
+.hero-note,.hero-scroll{color:#fdf8f0;text-shadow:0 1px 8px #2b170f80}
+.hero-stamp{display:none}
+.values-strip{min-height:70px;background:#f2e5d5;border-color:#e8d9c8;gap:42px}
+.values-strip>div{color:#4a2817}.values-strip svg,.text-link svg{color:#9a6535}
+.collection{padding:75px 5% 90px;background:#faf5ee}
+.section-heading h2,.story h2,.ritual h2,.faq-section h2{color:#2b170f}
+.collection-toolbar{border-color:#e8d9c8}
+.filter.active{background:#4a2817;border-color:#4a2817;color:#fff8ed}
+.product-grid{gap:14px;background:transparent;border:0}
+.product-card{background:#fffdf9;border:1px solid #eee3d6;border-radius:8px;overflow:hidden;padding-bottom:12px;box-shadow:0 2px 8px #432a1510}
+.product-visual{aspect-ratio:1.02;background:#f2e5d5!important;border:0}
+.product-visual img{object-fit:cover}
+.product-tag{top:10px;left:10px;border-radius:2px;background:#fffaf2;color:#775331;font-size:7px;letter-spacing:.07em}
+.quick-view{background:#faf5eeed;color:#4a2817}
+.product-meta{padding:12px 12px 0}
+.product-meta p{color:#75665a;font-size:8px}
+.product-name{font:500 14px/1.35 var(--sans);color:#2b211b}
+.product-price{font-size:12px;color:#4a2817;font-weight:650;padding-top:13px}
+.add-button{width:calc(100% - 24px);height:36px;margin:11px 12px 0;border:0;border-radius:4px;background:#2b170f;color:#fff8ed;padding:0 10px;font-size:9px}
+.add-button:hover{background:#74421f;color:#fff8ed}
+.story{background:#f2e5d5}.story-image img{filter:none}.story-copy>p:not(.eyebrow){color:#66584d}
+.story-mark{color:#8c552d1c}
+.ritual{padding-top:95px;padding-bottom:95px}
+.ritual-copy>p:not(.eyebrow){color:#75665a}
+.ritual-image{box-shadow:10px 12px 0 #f2e5d5}.ritual-image img{filter:none}
+.faq-section{border-color:#e8d9c8}.faq-list details,.detail-extra details{border-color:#e8d9c8}
+.newsletter{background:#4a2817;color:#fff8ed}.newsletter h2,.newsletter h2 em{color:#fff8ed}.newsletter .eyebrow{color:#e5bd82}.newsletter>p:not(.eyebrow){color:#eadccd}.newsletter form{border-color:#b9823e}.newsletter input{color:#fff8ed}.newsletter input::placeholder,.newsletter small{color:#d4c1aa}.newsletter form button{color:#e5bd82}
+.site-footer{background:#2b170f;color:#fff8ed}.footer-logo{color:#fff8ed}.footer-logo span,.footer-links span{color:#d3a15f}.footer-top>div:first-child p,.footer-links a{color:#eadccd}.footer-bottom{border-color:#604638;color:#ccb9a4}.footer-bottom a{color:#eadccd}
+.drawer,.checkout-modal,.detail-page,.info-page{background:#faf5ee;color:#2b211b}
+.drawer-head,.cart-line,.order-summary{border-color:#e8d9c8}
+.detail-visual{background:#f2e5d5!important;box-shadow:10px 12px 0 #f2e5d5}
+.detail-copy h1{color:#2b170f}.detail-price{color:#74421f}
+@media(max-width:1000px){.hero-copy{left:6%;width:48%}.hero-shade{background:linear-gradient(90deg,#faf1e4 0%,rgba(250,241,228,.94) 30%,rgba(250,241,228,.62) 54%,rgba(250,241,228,.06) 82%)}.collection{padding-left:4%;padding-right:4%}.product-grid{gap:12px}}
+@media(max-width:680px){.hero{height:650px;max-height:calc(100svh - 98px);min-height:540px}.hero-photo{object-position:64% center}.hero-shade{background:linear-gradient(0deg,rgba(43,23,15,.85) 0%,rgba(43,23,15,.53) 36%,rgba(250,241,228,.03) 76%),linear-gradient(90deg,rgba(250,241,228,.18),transparent 60%)}.hero-copy{left:7%;right:6%;top:auto;bottom:21%;width:auto}.hero h1{font-size:clamp(50px,13vw,70px);color:#fff8ed}.hero h1 em,.eyebrow.light{color:#f0d9b8}.hero-intro{color:#fff8ed}.hero-note,.hero-scroll{color:#fff8ed}.values-strip{gap:15px 12px}.collection{padding:60px 4% 68px}.product-grid{gap:14px 9px}.product-card{border-radius:6px;padding-bottom:9px}.product-visual{aspect-ratio:.78}.product-meta{padding:9px 8px 0}.product-name{font-size:12px}.product-price{font-size:10px;padding-top:7px}.product-tag{font-size:6px}.add-button{height:33px;margin:8px 8px 0;width:calc(100% - 16px);font-size:8px}.story,.values-strip{background:#f2e5d5}.ritual-image{box-shadow:8px 9px 0 #f2e5d5}.newsletter{background:#4a2817}.site-footer{background:#2b170f}}
+
+/* En-tête de boutique avec recherche et accès aux catégories illustrées. */
+.site-header{height:112px;padding:8px 5% 0;grid-template-columns:minmax(180px,1fr) minmax(260px,440px) minmax(150px,1fr);grid-template-rows:56px 44px;column-gap:28px;align-content:center}
+.wordmark{grid-column:1;grid-row:1;justify-self:start;font-size:29px;flex-direction:column;align-items:center;gap:4px}
+.wordmark span{font-size:8px;letter-spacing:.42em}
+.site-search{grid-column:2;grid-row:1;display:flex;align-items:center;gap:10px;height:40px;border-radius:24px;padding:0 15px;background:#f2e5d5;color:#8b7259}
+.site-search input{width:100%;border:0;outline:0;background:transparent;color:#2b211b;font-size:11px}
+.site-search input::placeholder{color:#75665a}
+.bag-button{grid-column:3;grid-row:1;align-self:center}
+.main-nav{grid-column:1/-1;grid-row:2;align-self:center;gap:clamp(20px,4vw,58px)}
+.category-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1380px;padding:0 5%;margin:0 auto 24px}
+.category-tile{position:relative;isolation:isolate;overflow:hidden;min-height:168px;padding:0;border:0;border-radius:8px;background:#744a2f;text-align:left;color:#fff8ed;cursor:pointer}
+.category-tile img{z-index:-2;object-fit:cover;transition:transform .5s ease}
+.category-tile:hover img{transform:scale(1.035)}
+.category-tile-shade{position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,rgba(43,23,15,.76),rgba(43,23,15,.22) 75%)}
+.category-tile-copy{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;flex-direction:column;padding:22px 28px;gap:7px}
+.category-tile-copy strong{font:400 clamp(23px,2.5vw,34px)/1.1 var(--serif)}
+.category-tile-copy small{font-size:11px;color:#fff4e5}
+.category-tile-copy em{display:inline-flex;align-items:center;gap:8px;margin-top:6px;border-radius:20px;padding:8px 13px;background:#f2e5d5;color:#4a2817;font-size:9px;font-style:normal;font-weight:600}
+@media(max-width:1000px){.site-header{padding-left:4%;padding-right:4%;grid-template-columns:minmax(145px,1fr) minmax(220px,400px) minmax(110px,1fr);column-gap:15px}.main-nav{gap:clamp(18px,3vw,32px)}.category-tiles{padding-left:4%;padding-right:4%}}
+@media(max-width:680px){.site-header{height:120px;padding:5px 5% 7px;grid-template-columns:38px 1fr 72px;grid-template-rows:62px 42px;column-gap:6px}.mobile-menu{display:block;grid-column:1;grid-row:1;justify-self:start}.wordmark{grid-column:2;grid-row:1;justify-self:center;font-size:21px;flex-direction:column}.wordmark span{font-size:7px}.site-search{grid-column:1/-1;grid-row:2;height:38px;padding:0 13px}.site-search input{font-size:10px}.bag-button{grid-column:3;grid-row:1;font-size:0;justify-self:end}.bag-button span{font-size:9px}.main-nav{top:120px;grid-column:1/-1;grid-row:3;gap:16px}.category-tiles{grid-template-columns:1fr;gap:10px;margin-bottom:18px}.category-tile{min-height:142px}.category-tile-copy{padding:18px 20px}.category-tile-copy strong{font-size:25px}.category-tile-copy small{font-size:10px}}
+
+/* Ajustement de composition : la photo du hammam reste visible à gauche,
+   le texte s'appuie sur le mur sombre à droite. */
+.site-header{grid-template-columns:minmax(180px,.9fr) minmax(300px,480px) minmax(130px,.9fr);background:#faf5ee;border-bottom-color:#e8d9c8}
+.wordmark{color:#2b170f}
+.wordmark span{color:#b9823e}
+.site-search{background:#f2e5d5;color:#75563a}
+.site-search input{color:#2b211b}
+.bag-button{color:#2b170f}
+.bag-button span{border-color:#b9823e;color:#4a2817}
+.main-nav{position:relative;isolation:isolate;align-items:center;height:44px}
+.main-nav::before{content:"";position:absolute;z-index:-1;inset:0 auto 0 50%;width:100vw;transform:translateX(-50%);background:#2b170f}
+.main-nav a{color:#faf5ee}
+.main-nav a:hover{color:#e3b976}
+.hero{height:clamp(430px,38vw,530px);min-height:430px;background:#604531}
+.hero-photo{object-position:50% 53%;filter:brightness(1.02) saturate(1.28) contrast(1.14) sepia(.06)}
+.hero-shade{background:linear-gradient(90deg,rgba(43,23,15,0) 28%,rgba(43,23,15,.12) 43%,rgba(43,23,15,.66) 67%,rgba(43,23,15,.82) 100%),linear-gradient(0deg,rgba(43,23,15,.2),transparent 26%)}
+.hero-copy{left:auto;right:7.5%;top:50%;width:min(520px,42%);transform:translateY(-50%)}
+.hero-copy .eyebrow.light{color:#e5bd82}
+.hero h1{font-size:clamp(58px,6.2vw,86px);line-height:.99;color:#fff8ed;letter-spacing:-.05em;margin-bottom:22px}
+.hero h1 em{color:#efcf91}
+.hero-intro{font-size:15px;line-height:1.65;color:#fff8ed;margin-bottom:25px}
+.button-cream{min-height:50px;padding:0 25px;border-radius:28px;background:#f2e5d5;color:#2b170f;font-size:12px;box-shadow:0 4px 14px #1e100d20}
+.button-cream:hover{background:#fff8ed;color:#2b170f}
+.hero-note{right:7.5%;bottom:26px;color:#fff8ed}
+.hero-scroll{left:5%;bottom:25px;color:#fff8ed}
+.values-strip{min-height:64px}
+.category-tiles{gap:12px;margin-bottom:8px}
+.category-tile{min-height:148px}
+.collection{padding-top:40px;padding-bottom:72px}
+.collection-toolbar{margin-top:22px;margin-bottom:18px}
+.product-visual{aspect-ratio:1.02}
+.product-card{box-shadow:0 2px 10px #432a1512}
+@media(max-width:1000px){.site-header{grid-template-columns:minmax(150px,.8fr) minmax(230px,1.5fr) minmax(115px,.7fr)}.hero-copy{right:5%;width:48%}.hero-shade{background:linear-gradient(90deg,rgba(43,23,15,0) 15%,rgba(43,23,15,.2) 38%,rgba(43,23,15,.7) 67%,rgba(43,23,15,.82) 100%),linear-gradient(0deg,rgba(43,23,15,.16),transparent 28%)}.collection{padding-top:42px}.category-tile{min-height:138px}}
+@media(max-width:680px){.main-nav{height:auto;align-items:flex-start;background:#faf5ee}.main-nav::before{display:none}.main-nav a{color:#4a2817}.main-nav a:hover{color:#b9823e}.hero{height:clamp(520px,calc(100svh - 132px),640px);min-height:520px}.hero-photo{object-position:24% center;filter:brightness(.98) saturate(1.24) contrast(1.1) sepia(.04)}.hero-shade{background:linear-gradient(0deg,rgba(43,23,15,.88) 0%,rgba(43,23,15,.72) 32%,rgba(43,23,15,.2) 62%,rgba(43,23,15,0) 82%),linear-gradient(90deg,rgba(43,23,15,.06),transparent 55%)}.hero-copy{left:7%;right:6%;bottom:17%;top:auto;width:auto;transform:none}.hero h1{font-size:clamp(48px,12vw,66px);line-height:1;color:#fff8ed;margin-bottom:16px}.hero-intro{font-size:12px;line-height:1.55;color:#fff8ed;margin-bottom:19px}.hero-note{right:7%;bottom:22px}.hero-scroll{left:7%;bottom:21px}.values-strip{min-height:64px}.category-tile{min-height:132px}.collection{padding-top:34px;padding-bottom:60px}.collection-toolbar{margin-top:16px}}
