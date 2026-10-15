@@ -1,9 +1,10 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabasePublicKey } from "@/lib/supabase/public-key";
 import { products as previewProducts, type Product } from "@/lib/products";
 
 export async function getPublicCatalog(): Promise<{ products: Product[]; preview: boolean; unavailable: boolean }> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const key = getSupabasePublicKey();
   if (!url || !key) return { products: previewProducts, preview: true, unavailable: false };
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { products: [], preview: false, unavailable: true };

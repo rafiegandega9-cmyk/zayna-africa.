@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { calculateCartLines, calculateCartTotal, calculateGrandTotal } from "../src/lib/cart.ts";
+import { calculateCartLines, calculateCartTotal, calculateGrandTotal, parseStoredCart } from "../src/lib/cart.ts";
 import { getDeliveryFeeXof } from "../src/lib/delivery.ts";
 
 const catalog = [
@@ -56,4 +56,16 @@ test("applies each validated city delivery fee and leaves other cities unpriced"
   assert.equal(calculateGrandTotal(77000, getDeliveryFeeXof("San-Pédro")), 80000);
   assert.equal(getDeliveryFeeXof("Autre ville"), null);
   assert.equal(getDeliveryFeeXof("toString"), null);
+});
+
+test("restores only valid product IDs and integer quantities from the saved browser cart", () => {
+  assert.deepEqual(parseStoredCart(JSON.stringify([
+    { id: "baobab", quantity: 2 },
+    { id: "argan", quantity: "3" },
+    { id: "", quantity: 1 },
+    { id: "ghassoul", quantity: 0 },
+    null,
+  ])), [{ id: "baobab", quantity: 2 }]);
+  assert.deepEqual(parseStoredCart("invalid-json"), []);
+  assert.deepEqual(parseStoredCart(null), []);
 });

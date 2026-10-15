@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "test:cart": "node --experimental-strip-types --test tests/cart.test.mjs",
+    "test:supabase": "node --experimental-strip-types --test tests/supabase-public-key.test.mjs",
     "test:payments": "node --experimental-strip-types --test tests/geniuspay-config.test.mjs tests/checkout.test.mjs tests/geniuspay-webhook.test.mjs tests/order-update.test.mjs tests/order-migration-security.test.mjs",
-    "test:all": "npm run test:cart && npm run test:payments"
+    "test:all": "npm run test:cart && npm run test:supabase && npm run test:payments"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

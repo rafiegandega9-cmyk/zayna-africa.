@@ -101,8 +101,36 @@ test("rejects a client total that differs from the server-calculated total", asy
   let paymentCalls = 0;
   const result = await handleCheckoutRequest({ ...checkoutBody, expectedTotal: 1 }, dependencies(repository, async () => { paymentCalls += 1; return validProviderResponse(); }));
   assert.equal(result.status, 409);
+  assert.equal(result.body.code, "PRICE_CHANGED");
+  assert.deepEqual(result.body.quote, {
+    items: [{ productId: "savon-noir", unitPriceXof: 5000 }],
+    productTotalXof: 5000,
+    deliveryFeeXof: 1500,
+    totalXof: 6500,
+  });
   assert.equal(state.orders.length, 0);
   assert.equal(paymentCalls, 0);
+});
+
+test("reconciles a stale browser price and only creates checkout after explicit retry at the quoted total", async () => {
+  const updatedCatalog = [{ ...catalog[0], price_xof: 6000 }];
+  const { state, repository } = makeRepository({ products: updatedCatalog });
+  let paymentCalls = 0;
+  const paymentFetch = async () => { paymentCalls += 1; return validProviderResponse({ amount: 7500 }); };
+
+  const staleAttempt = await handleCheckoutRequest(checkoutBody, dependencies(repository, paymentFetch));
+  assert.equal(staleAttempt.status, 409);
+  assert.equal(staleAttempt.body.code, "PRICE_CHANGED");
+  assert.equal(staleAttempt.body.quote.totalXof, 7500);
+  assert.equal(staleAttempt.body.quote.items[0].unitPriceXof, 6000);
+  assert.equal(state.orders.length, 0);
+  assert.equal(paymentCalls, 0);
+
+  const confirmedRetry = await handleCheckoutRequest({ ...checkoutBody, expectedTotal: staleAttempt.body.quote.totalXof }, dependencies(repository, paymentFetch));
+  assert.equal(confirmedRetry.status, 200);
+  assert.equal(state.orders[0].total_xof, 7500);
+  assert.equal(state.orders[0].items[0].unit_price_xof, 6000);
+  assert.equal(paymentCalls, 1);
 });
 
 test("rejects unavailable or insufficient stock and never calls the provider", async () => {

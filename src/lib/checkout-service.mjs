@@ -48,7 +48,16 @@ export async function handleCheckoutRequest(body, dependencies) {
   const productTotal = orderItems.reduce((sum, item) => sum + item.quantity * item.unit_price_xof, 0);
   const total = calculateGrandTotal(productTotal, deliveryFee);
   if (!Number.isSafeInteger(body.expectedTotal) || body.expectedTotal !== total) {
-    return response(409, { error: "Le total du panier a changé. Actualisez la boutique avant de continuer; aucun paiement n’a été lancé." });
+    return response(409, {
+      code: "PRICE_CHANGED",
+      error: "Les prix du catalogue ont changé. Vérifiez le nouveau total puis confirmez à nouveau; aucun paiement n’a été lancé.",
+      quote: {
+        items: orderItems.map((item) => ({ productId: item.product_id, unitPriceXof: item.unit_price_xof })),
+        productTotalXof: productTotal,
+        deliveryFeeXof: deliveryFee,
+        totalXof: total,
+      },
+    });
   }
   if (!Number.isSafeInteger(total) || total < 200) return response(400, { error: "Le montant minimum accepté par GeniusPay est de 200 FCFA." });
 

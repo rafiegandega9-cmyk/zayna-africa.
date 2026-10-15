@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Leaf, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, X } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { formatPrice, type Product } from "@/lib/products";
-import { calculateCartLines, calculateCartTotal, calculateGrandTotal, type CartLine } from "@/lib/cart";
+import { calculateCartLines, calculateCartTotal, calculateGrandTotal, parseStoredCart, type CartLine } from "@/lib/cart";
 import { getDeliveryFeeXof } from "@/lib/delivery";
 import { getProductPresentationImage, isProductIllustrativePhoto } from "@/lib/product-artwork";
 
@@ -26,19 +26,25 @@ export default function Boutique({ products, previewCatalog, catalogUnavailable,
   const [submitting, setSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
   const [shippingCity, setShippingCity] = useState("Abidjan");
+  const [catalogPriceOverrides, setCatalogPriceOverrides] = useState<Record<string, number>>({});
+  const [cartHydrated, setCartHydrated] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      try { setCart(JSON.parse(localStorage.getItem("zayna-cart") ?? "[]")); } catch { setCart([]); }
-    }, 0);
-    return () => window.clearTimeout(timer);
+    const syncCart = () => {
+      setCart(parseStoredCart(localStorage.getItem("zayna-cart")));
+      setCartHydrated(true);
+    };
+    window.addEventListener("zayna-cart-updated", syncCart);
+    window.addEventListener("storage", syncCart);
+    syncCart();
+    return () => {
+      window.removeEventListener("zayna-cart-updated", syncCart);
+      window.removeEventListener("storage", syncCart);
+    };
   }, []);
   useEffect(() => {
-    const syncCart = () => { try { setCart(JSON.parse(localStorage.getItem("zayna-cart") ?? "[]")); } catch { setCart([]); } };
-    window.addEventListener("zayna-cart-updated", syncCart);
-    return () => window.removeEventListener("zayna-cart-updated", syncCart);
-  }, []);
-  useEffect(() => { localStorage.setItem("zayna-cart", JSON.stringify(cart)); }, [cart]);
+    if (cartHydrated) localStorage.setItem("zayna-cart", JSON.stringify(cart));
+  }, [cart, cartHydrated]);
 
   const visibleProducts = products.filter((product) => {
     const matchesCategory = activeCategory === "Tout voir" || product.category === activeCategory;
@@ -46,7 +52,10 @@ export default function Boutique({ products, previewCatalog, catalogUnavailable,
     const matchesSearch = !query || `${product.name} ${product.category} ${product.description}`.toLocaleLowerCase("fr").includes(query);
     return matchesCategory && matchesSearch;
   });
-  const cartDetails = useMemo(() => calculateCartLines(cart, products), [cart, products]);
+  const pricedProducts = useMemo(() => products.map((product) => catalogPriceOverrides[product.id] === undefined
+    ? product
+    : { ...product, price: catalogPriceOverrides[product.id] }), [catalogPriceOverrides, products]);
+  const cartDetails = useMemo(() => calculateCartLines(cart, pricedProducts), [cart, pricedProducts]);
   const cartCount = cart.reduce((sum, line) => sum + line.quantity, 0);
   const total = calculateCartTotal(cartDetails);
   const deliveryFeeXof = getDeliveryFeeXof(shippingCity);
@@ -75,6 +84,19 @@ export default function Boutique({ products, previewCatalog, catalogUnavailable,
         expectedTotal: payableTotal,
       }) });
       const result = await response.json();
+      if (response.status === 409 && result.code === "PRICE_CHANGED" && Array.isArray(result.quote?.items)
+        && Number.isSafeInteger(result.quote.totalXof)) {
+        const quotedPrices = Object.fromEntries(result.quote.items
+          .filter((item: { productId?: unknown; unitPriceXof?: unknown }) => typeof item.productId === "string"
+            && cart.some((line) => line.id === item.productId)
+            && Number.isSafeInteger(item.unitPriceXof))
+          .map((item: { productId: string; unitPriceXof: number }) => [item.productId, item.unitPriceXof]));
+        if (Object.keys(quotedPrices).length === cart.length) {
+          setCatalogPriceOverrides((current) => ({ ...current, ...quotedPrices }));
+          setCheckoutError(`Le catalogue a été actualisé. Le nouveau total est ${formatPrice(result.quote.totalXof)}. Vérifiez-le puis confirmez à nouveau; aucun paiement n’a été lancé.`);
+          return;
+        }
+      }
       if (!response.ok) throw new Error(result.error || "Le paiement n’a pas pu être préparé.");
       if (typeof result.checkoutUrl !== "string" || !result.checkoutUrl.startsWith("https://")) throw new Error("Lien de paiement non valide reçu.");
       window.location.assign(result.checkoutUrl);
