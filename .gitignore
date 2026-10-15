@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+build/
+.env*
+!.env.example
+npm-debug.log*
+.vercel
+.agents/
+.codex/
+supabase/.temp/
