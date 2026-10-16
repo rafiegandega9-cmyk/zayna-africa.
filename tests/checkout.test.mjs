@@ -80,7 +80,8 @@ test("creates an awaiting-payment order from server catalogue prices and sends t
   assert.equal(requestBody.amount, 6500);
   assert.equal(requestBody.currency, "XOF");
   assert.equal(requestBody.metadata.order_id, state.orders[0].id);
-  assert.equal(requestBody.success_url, `${config.siteUrl}/?payment=return`);
+  assert.equal(requestBody.success_url, `${config.siteUrl}/?payment=return&order_id=${state.orders[0].id}`);
+  assert.equal(requestBody.error_url, `${config.siteUrl}/?payment=return&order_id=${state.orders[0].id}`);
   assert.equal(requestBody.error_url, requestBody.success_url);
 });
 

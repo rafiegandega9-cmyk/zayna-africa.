@@ -99,7 +99,7 @@ export async function handleCheckoutRequest(body, dependencies) {
   try {
     paymentResponse = await paymentFetch("https://geniuspay.ci/api/v1/merchant/payments", {
       method: "POST", headers: { "X-API-Key": apiKey, "X-API-Secret": apiSecret, "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: total, currency: "XOF", description: `Commande Zayna Africa ${orderId}`, customer: { name, email: email || undefined, phone, country: "CI" }, success_url: `${siteUrl}/?payment=return`, error_url: `${siteUrl}/?payment=return`, metadata: { order_id: orderId } }),
+      body: JSON.stringify({ amount: total, currency: "XOF", description: `Commande Zayna Africa ${orderId}`, customer: { name, email: email || undefined, phone, country: "CI" }, success_url: `${siteUrl}/?payment=return&order_id=${encodeURIComponent(orderId)}`, error_url: `${siteUrl}/?payment=return&order_id=${encodeURIComponent(orderId)}`, metadata: { order_id: orderId } }),
       cache: "no-store", signal: AbortSignal.timeout(15_000),
     });
   } catch {

@@ -43,6 +43,66 @@ export default function Boutique({ products, previewCatalog, catalogUnavailable,
     };
   }, []);
   useEffect(() => {
+    if (!cartHydrated) return;
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("payment") === "return" ? params.get("order_id") : null;
+    if (!orderId) return;
+
+    let active = true;
+    let finished = false;
+    let attempts = 0;
+    const stopChecking = () => {
+      window.clearInterval(timer);
+    };
+    const clearReturnParams = () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("payment");
+      url.searchParams.delete("order_id");
+      window.history.replaceState(window.history.state, "", url);
+    };
+    const checkPayment = async () => {
+      try {
+        const response = await fetch(`/api/orders/${encodeURIComponent(orderId)}/status`, { cache: "no-store" });
+        if (!response.ok) return;
+        const result = await response.json();
+        if (!active || finished) return;
+        if (result.paymentStatus === "paid") {
+          finished = true;
+          localStorage.removeItem("zayna-cart");
+          setCart([]);
+          window.dispatchEvent(new Event("zayna-cart-updated"));
+          setNotice("Paiement confirmé. Votre panier a été vidé.");
+          window.setTimeout(() => setNotice(""), 5000);
+          clearReturnParams();
+          stopChecking();
+        } else if (["failed", "initialization_failed"].includes(result.paymentStatus)) {
+          finished = true;
+          setNotice("Le paiement n’a pas été confirmé. Votre panier est conservé.");
+          window.setTimeout(() => setNotice(""), 5000);
+          clearReturnParams();
+          stopChecking();
+        }
+      } catch {
+        // A temporary status lookup error must never clear the cart.
+      }
+    };
+
+    const timer = window.setInterval(() => {
+      attempts += 1;
+      if (attempts >= 60) {
+        finished = true;
+        stopChecking();
+        return;
+      }
+      void checkPayment();
+    }, 2000);
+    void checkPayment();
+    return () => {
+      active = false;
+      stopChecking();
+    };
+  }, [cartHydrated]);
+  useEffect(() => {
     if (cartHydrated) localStorage.setItem("zayna-cart", JSON.stringify(cart));
   }, [cart, cartHydrated]);
 
