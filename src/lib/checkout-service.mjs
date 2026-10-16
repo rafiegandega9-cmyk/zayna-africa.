@@ -1,10 +1,34 @@
 import { calculateGrandTotal } from "./cart.ts";
 import { getDeliveryFeeXof } from "./delivery.ts";
-import { getSandboxCheckoutUrl, isGeniusPaySandboxConfigured } from "./geniuspay-config.ts";
+import { isGeniusPaySandboxConfigured } from "./geniuspay-config.ts";
 
 const text = (value, max) => typeof value === "string" ? value.trim().slice(0, max) : "";
 
 const response = (status, body) => ({ status, body });
+
+function getSandboxCheckoutUrl(payment, expectedAmount) {
+  if (payment.amount !== expectedAmount) return { url: null, reason: "amount_mismatch" };
+  if (payment.currency !== "XOF") return { url: null, reason: "currency_mismatch" };
+  if (payment.environment !== "sandbox") return { url: null, reason: "environment_mismatch" };
+
+  const candidates = [payment.checkout_url, payment.payment_url]
+    .filter((value) => typeof value === "string" && value.length > 0);
+  if (!candidates.length) return { url: null, reason: "checkout_url_missing" };
+  for (const candidate of candidates) {
+    try {
+      const url = new URL(candidate);
+      if (url.protocol === "https:"
+        && ["geniuspay.ci", "pay.genius.ci"].includes(url.hostname)
+        && !url.username
+        && !url.password) {
+        return { url: url.toString(), reason: null };
+      }
+    } catch {
+      // Try the alternate documented checkout URL field, if present.
+    }
+  }
+  return { url: null, reason: "checkout_url_untrusted" };
+}
 
 export async function handleCheckoutRequest(body, dependencies) {
   if (!body || typeof body !== "object") return response(400, { error: "Données de commande invalides." });

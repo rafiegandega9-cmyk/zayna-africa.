@@ -98,6 +98,16 @@ test("uses the documented data.payment_url checkout link when data.checkout_url 
   assert.equal(state.orders[0].geniuspay_reference, "TXN-SANDBOX-PAYMENT-URL");
 });
 
+test("accepts an HTTP 201 checkout response with an authorized URL regardless of provider initialization status", async () => {
+  const { state, repository } = makeRepository();
+  const result = await handleCheckoutRequest(checkoutBody, dependencies(repository, async () => validProviderResponse({ status: "created" })));
+
+  assert.equal(result.status, 200);
+  assert.equal(result.body.checkoutUrl, "https://geniuspay.ci/checkout/test-only");
+  assert.equal(state.orders[0].payment_status, "pending");
+  assert.equal(state.orders[0].order_status, "awaiting_payment");
+});
+
 test("rejects malformed contact, unsupported delivery city, and invalid quantity before creating an order", async () => {
   const { state, repository } = makeRepository();
   let paymentCalls = 0;
@@ -214,7 +224,6 @@ test("rejects malformed, live, or unexpected checkout responses and records init
     () => validProviderResponse({ environment: "live" }),
     () => validProviderResponse({ checkout_url: "https://untrusted.example/checkout" }),
     () => validProviderResponse({ amount: 9999 }),
-    () => validProviderResponse({ status: "completed" }),
   ];
   for (const makeResponse of cases) {
     const { state, repository } = makeRepository();
