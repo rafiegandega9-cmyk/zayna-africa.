@@ -84,6 +84,20 @@ test("creates an awaiting-payment order from server catalogue prices and sends t
   assert.equal(requestBody.error_url, requestBody.success_url);
 });
 
+test("uses the documented data.payment_url checkout link when data.checkout_url is absent", async () => {
+  const { state, repository } = makeRepository();
+  const responseWithPaymentUrl = new Response(JSON.stringify({ success: true, data: {
+    reference: "TXN-SANDBOX-PAYMENT-URL", amount: 6500, currency: "XOF", status: "pending", environment: "sandbox",
+    payment_url: "https://geniuspay.ci/checkout/TXN-SANDBOX-PAYMENT-URL",
+  } }), { status: 201, headers: { "content-type": "application/json" } });
+
+  const result = await handleCheckoutRequest(checkoutBody, dependencies(repository, async () => responseWithPaymentUrl));
+  assert.equal(result.status, 200);
+  assert.equal(result.body.checkoutUrl, "https://geniuspay.ci/checkout/TXN-SANDBOX-PAYMENT-URL");
+  assert.equal(state.orders[0].payment_status, "pending");
+  assert.equal(state.orders[0].geniuspay_reference, "TXN-SANDBOX-PAYMENT-URL");
+});
+
 test("rejects malformed contact, unsupported delivery city, and invalid quantity before creating an order", async () => {
   const { state, repository } = makeRepository();
   let paymentCalls = 0;
@@ -169,8 +183,10 @@ test("marks the order initialization_failed after a provider 401 or network erro
   const providerDiagnostics = [];
   const unauthorizedResult = await handleCheckoutRequest(checkoutBody, dependencies(unauthorized.repository, async () => new Response("unauthorized", { status: 401 }), { logProviderIssue: (details) => providerDiagnostics.push(details) }));
   assert.equal(unauthorizedResult.status, 502);
+  assert.equal(unauthorizedResult.body.code, "GENIUSPAY_AUTH_REJECTED");
   assert.match(unauthorizedResult.body.error, /HTTP 401/);
   assert.deepEqual(providerDiagnostics, [{ httpStatus: 401, providerAccepted: false, responseDataPresent: false }]);
+  assert.equal(JSON.stringify({ body: unauthorizedResult.body, logs: providerDiagnostics }).includes("unauthorized"), false);
   assert.equal(unauthorized.state.orders[0].payment_status, "initialization_failed");
   assert.equal(unauthorized.state.updates.length, 1);
 
@@ -186,6 +202,7 @@ test("reports the safe validation reason when GeniusPay returns an unexpected ch
   const providerDiagnostics = [];
   const result = await handleCheckoutRequest(checkoutBody, dependencies(repository, async () => validProviderResponse({ checkout_url: "https://untrusted.example/pay" }), { logProviderIssue: (details) => providerDiagnostics.push(details) }));
   assert.equal(result.status, 502);
+  assert.equal(result.body.code, "GENIUSPAY_INVALID_RESPONSE");
   assert.match(result.body.error, /lien de checkout Sandbox valide/);
   assert.deepEqual(providerDiagnostics, [{ httpStatus: 201, providerAccepted: true, reason: "checkout_url_untrusted" }]);
   assert.equal(state.orders[0].payment_status, "initialization_failed");

@@ -88,16 +88,19 @@ export async function handleCheckoutRequest(body, dependencies) {
   if (!paymentResponse.ok || !result?.success || !payment || typeof payment !== "object") {
     logProviderIssue({ httpStatus: paymentResponse.status, providerAccepted: result?.success === true, responseDataPresent: Boolean(payment) });
     await repository.markInitializationFailed(orderId);
-    const reason = paymentResponse.status === 401 || paymentResponse.status === 403
-      ? `GeniusPay a refusé l’authentification Sandbox (HTTP ${paymentResponse.status}). Vérifiez les identifiants de l’environnement dans Vercel.`
-      : `GeniusPay a refusé la demande de paiement (HTTP ${paymentResponse.status}). Aucun paiement n’a été confirmé.`;
-    return response(502, { error: reason });
+    if (paymentResponse.status === 401 || paymentResponse.status === 403) {
+      return response(502, { code: "GENIUSPAY_AUTH_REJECTED", error: `GeniusPay a refusé l’authentification Sandbox (HTTP ${paymentResponse.status}). Vérifiez les identifiants de l’environnement dans Vercel.` });
+    }
+    if (!paymentResponse.ok) {
+      return response(502, { code: "GENIUSPAY_HTTP_ERROR", error: `GeniusPay a refusé la demande (HTTP ${paymentResponse.status}). Aucun paiement n’a été confirmé.` });
+    }
+    return response(502, { code: "GENIUSPAY_REJECTED", error: "GeniusPay a rejeté la demande de paiement. Consultez les logs Vercel pour le diagnostic expurgé; aucun paiement n’a été confirmé." });
   }
   const checkout = getSandboxCheckoutUrl(payment, total);
   if (!checkout.url) {
     logProviderIssue({ httpStatus: paymentResponse.status, providerAccepted: true, reason: checkout.reason });
     await repository.markInitializationFailed(orderId);
-    return response(502, { error: "La réponse GeniusPay ne contient pas un lien de checkout Sandbox valide. Aucun paiement n’a été confirmé." });
+    return response(502, { code: "GENIUSPAY_INVALID_RESPONSE", error: "La réponse GeniusPay ne contient pas un lien de checkout Sandbox valide. Consultez les logs Vercel pour le diagnostic expurgé; aucun paiement n’a été confirmé." });
   }
   const { error: updateError } = await repository.savePaymentReference(orderId, payment.reference ?? null);
   if (updateError) return response(503, { error: "Le paiement a été préparé mais sa référence n’a pas pu être enregistrée. Contactez la boutique avant de réessayer." });
